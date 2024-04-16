@@ -1,0 +1,28 @@
+function searchWeather() {
+  const cityInput = document.getElementById('city-input').value;
+  const apiKey = '153aa22d1cd06d4d2853d0ff8c6e4862';
+  const apiUrl = ` https://api.openweathermap.org/data/2.5/weather`;
+
+  fetch(apiUrl)
+    .then(response => response.json())
+    .then(data => {
+      const weatherInfo = document.getElementById('weather-info');
+      if (data.cod === '404') {
+        weatherInfo.innerHTML = '<p>Cidade não encontrada. Por favor, verifique o nome da cidade.</p>';
+      } else {
+        const cityName = data.name;
+        const temperature = data.main.temp;
+        const description = data.weather[0].description;
+        const iconCode = data.weather[0].icon;
+        const iconUrl = ` https://api.openweathermap.org/data/2.5/weather`;
+
+        weatherInfo.innerHTML = `
+          <h2>${cityName}</h2>
+          <img src="${iconUrl}" alt="${description}">
+          <p>Temperatura: ${temperature}°C</p>
+          <p>${description}</p>
+        `;
+      }
+    })
+    .catch(error => console.error('Erro ao buscar dados:', error));
+}
